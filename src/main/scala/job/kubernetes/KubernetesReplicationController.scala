@@ -19,12 +19,13 @@ object KubernetesReplicationController {
     val factory = new YAMLFactory()
     val writer  = new StringWriter()
     val gen     = factory.createGenerator(writer)
+    val newname = name.replace('_', '-')
 
 		gen.writeStartObject()
     gen.writeStringField("apiVersion", "v1")
     gen.writeStringField("kind", "ReplicationController")
-    writeRCMetadata(gen, name, containerId)
-    writeRCSpec(gen, name, containerId, containerImage, nodeSelector, memoryLimit, cpuLimit, javaOpts, jobConfig)
+    writeRCMetadata(gen, newname, containerId)
+    writeRCSpec(gen, newname, containerId, containerImage, nodeSelector, memoryLimit, cpuLimit, javaOpts, jobConfig)
     gen.writeEndObject()
     gen.close()
 
