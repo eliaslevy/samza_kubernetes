@@ -71,7 +71,7 @@ object KubernetesReplicationController {
 		gen.writeFieldName("template")
 		gen.writeStartObject()
 		writePodMetadata(gen, name, containerId)
-    writePodSpec(gen, containerId, containerImage, nodeSelector, memoryLimit, cpuLimit, javaOpts, jobConfig)
+    writePodSpec(gen, name, containerId, containerImage, nodeSelector, memoryLimit, cpuLimit, javaOpts, jobConfig)
 		gen.writeEndObject()
 	}
 
@@ -88,6 +88,7 @@ object KubernetesReplicationController {
 
 	private def writePodSpec(
 		gen: 						JsonGenerator, 
+		name: 					String,
 		containerId: 		Integer,
 		containerImage: String,
 		nodeSelector:		Map[String, String],
@@ -100,7 +101,7 @@ object KubernetesReplicationController {
 		gen.writeStartObject()
 		writePodNodeSelector(gen, nodeSelector)
 		writePodVolumes(gen)
-		writePodContainers(gen, containerId, containerImage, memoryLimit, cpuLimit, javaOpts, jobConfig)
+		writePodContainers(gen, name, containerId, containerImage, memoryLimit, cpuLimit, javaOpts, jobConfig)
 		gen.writeEndObject()
 	}
 
@@ -117,6 +118,7 @@ object KubernetesReplicationController {
 
 	private def writePodContainers(
 		gen: 						JsonGenerator, 
+		name: 					String,
 		containerId: 		Integer, 
 		containerImage: String, 
 		memoryLimit: 		String, 
@@ -128,7 +130,7 @@ object KubernetesReplicationController {
 		gen.writeStartArray()
 
 		gen.writeStartObject()
-		gen.writeStringField("name", "samza")
+		gen.writeStringField("name", name)
 		gen.writeStringField("image", containerImage)
 		writeContainerEnv(gen, containerId, javaOpts, jobConfig)
 		writeContainerVolumeMounts(gen)
