@@ -72,7 +72,7 @@ class KubernetesJob(config: Config) extends StreamJob {
 			)
     )
 
-    val rcYAML = replicationControllers.mkString("---\n")
+    val rcYAML = replicationControllers.mkString 
     writer.write(rcYAML)
     writer.close
 
